@@ -1,0 +1,13 @@
+set(SOURCE_FILES 
+src/core/component.c
+src/core/processor.c
+src/units/unit.c
+src/network/network.c
+src/triggers/trigger.c
+src/tuning/tuner.c
+src/cost/cost.c
+src/data/sampler.c
+src/training/learning.c
+src/evaluation/evaluation.c
+src/volume/volume.c
+)
