@@ -12,8 +12,8 @@ extern "C" {
 
 Z_DECLARE_CLASS(zncomponent, ZNSampler, znsampler, /*members*/,
                 /*methods*/
-                Z_DECLARE_CLASS_METHOD(znvolume *, znsampler, sample_batch,
-                                       zsize batch_size))
+                Z_DECLARE_CLASS_METHOD(void **, znsampler, sample_batch,
+                                       zsize batch_size, zsize *n_batch))
 
 #ifdef __cplusplus
 }

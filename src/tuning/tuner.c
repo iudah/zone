@@ -4,10 +4,10 @@
 #include <zobject.h>
 #include <zobject.r.h>
 
-void zntuner_update_weights(zntuner *tuner, float *weights, float *gradients) {
+void zntuner_update_weights(void *tuner, void *weights) {
   zntuner_class *class = (zntuner_class *)zclassof((zobject *)tuner);
   assert((*class).update_weights);
-  return (*class).update_weights(tuner, weights, gradients);
+  return (*class).update_weights(tuner, weights);
 }
 
 Z_DEFINE_CLASS_CONSTRUCTOR(ZNTuner, zntuner,

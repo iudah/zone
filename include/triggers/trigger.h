@@ -9,6 +9,8 @@ extern "C" {
 
 Z_DECLARE_CLASS_TYPE(ZNTrigger, zntrigger)
 
+void zntrigger_trigger(zntrigger *trigger, float input);
+
 #ifdef __cplusplus
 }
 #endif

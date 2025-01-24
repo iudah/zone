@@ -5,7 +5,7 @@ project(Zone VERSION 1.0 DESCRIPTION "Zone NN API")
 set(TARGET zone)
 
 # Set C standard
-set(CMAKE_C_STANDARD 17)
+set(CMAKE_C_STANDARD 23)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 
 # Define compiler warnings in one place
@@ -33,13 +33,27 @@ include(ExternalProject)
 ExternalProject_Add(
   ZObject 
   SOURCE_DIR /sdcard/Jay/Projects/xab_laud_ubject/zobject/
-  CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${CMAKE_BINARY_DIR}/zobject
+  CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${CMAKE_BINARY_DIR}/
+  BUILD_ALWAYS TRUE
+)
+
+ExternalProject_Add(
+  Zot 
+  SOURCE_DIR /sdcard/Jay/Projects/xab_laud_ubject/zot/
+  CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${CMAKE_BINARY_DIR}/
+  BUILD_ALWAYS TRUE
+)
+
+ExternalProject_Add(
+  Zode 
+  SOURCE_DIR /sdcard/Jay/Projects/xab_laud_ubject/zode/
+  CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${CMAKE_BINARY_DIR}/
   BUILD_ALWAYS TRUE
 )
 
 # Create INTERFACE target for shared flags
 add_library(zone_c_flags INTERFACE)
-target_compile_features(zone_c_flags INTERFACE c_std_17)
+target_compile_features(zone_c_flags INTERFACE c_std_23)
 target_compile_options(
   zone_c_flags
   INTERFACE
@@ -57,14 +71,25 @@ add_library(${TARGET} SHARED)
 target_sources(${TARGET} PRIVATE ${SOURCE_FILES})
 target_link_options(${TARGET} PRIVATE ${VERSION_SCRIPT_FLAGS})
 set_target_properties(${TARGET} PROPERTIES LINK_DEPENDS ${VERSION_SCRIPT})
-target_include_directories(${TARGET} PRIVATE ${CMAKE_BINARY_DIR}/zobject/include )
-target_link_libraries(${TARGET} PRIVATE ${CMAKE_BINARY_DIR}/zobject/bin/libzobject.so)
-add_dependencies(${TARGET} ZObject)
+target_include_directories(${TARGET} PRIVATE ${CMAKE_BINARY_DIR}/include ${CMAKE_BINARY_DIR}/include ${CMAKE_BINARY_DIR}/include)
+target_link_directories(${TARGET} PRIVATE ${CMAKE_BINARY_DIR}/bin/ ${CMAKE_BINARY_DIR}/lib/ ${CMAKE_BINARY_DIR}/lib)
+target_link_libraries(${TARGET} PRIVATE zobject zot zode)
+add_dependencies(${TARGET} ZObject Zot Zode)
+
+set(ZOR_SRC /sdcard/Jay/Projects/xab_laud_ubject/zor)
+ExternalProject_Add(
+  Zor
+  SOURCE_DIR ${ZOR_SRC}
+  CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${CMAKE_BINARY_DIR}/
+  BUILD_BYPRODUCTS ${CMAKE_BINARY_DIR}/bin/libzor.so
+  BUILD_ALWAYS TRUE
+)
 
 add_executable(example-0 examples/example-0.c)
-target_link_libraries(example-0 PRIVATE ${TARGET})
-target_include_directories(example-0 PRIVATE ${CMAKE_BINARY_DIR}/zobject/include )
-target_link_libraries(example-0 PRIVATE ${CMAKE_BINARY_DIR}/zobject/bin/libzobject.so)
+target_link_libraries(example-0 PRIVATE ${TARGET} zobject zode zor)
+target_include_directories(example-0 PRIVATE ${CMAKE_BINARY_DIR}/include )
+target_link_directories(example-0 PRIVATE ${CMAKE_BINARY_DIR}/bin/ ${CMAKE_BINARY_DIR}/lib/ ${CMAKE_BINARY_DIR}/lib/)
+add_dependencies(${TARGET} Zor)
 
 # Tests section
 # Option to enable or disable tests

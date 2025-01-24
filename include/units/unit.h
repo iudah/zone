@@ -9,6 +9,8 @@ extern "C" {
 
 Z_DECLARE_CLASS_TYPE(ZNUnit, znunit)
 
+void znunit_compute(znunit *unit);
+
 #ifdef __cplusplus
 }
 #endif

@@ -4,13 +4,15 @@
 #include "../core/processor.r.h"
 #include "../units/unit.h"
 #include "network.h"
+#include "zmemory.h"
 #include <zobject.r.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-Z_DECLARE_CLASS(znprocessor, ZNNetwork, znnetwork, /*members*/ znunit *units;
+Z_DECLARE_CLASS(znprocessor, ZNNetwork, znnetwork, /*members*/ znunit **units;
+                zsize length; zsize idx;
                 ,
                 /*methods*/
                 Z_DECLARE_CLASS_METHOD(void, znnetwork, add_unit, znunit *unit);

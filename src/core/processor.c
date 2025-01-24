@@ -5,11 +5,11 @@
 #include <zobject.r.h>
 #include <zobjectdef.r.h>
 
-void znprocessor_process(znprocessor *processor) {
+void *znprocessor_process(void *processor, void *input) {
   znprocessor_class *class =
       (znprocessor_class *)zclassof((zobject *)processor);
   assert((*class).process);
-  return (*class).process(processor);
+  return (*class).process(processor, input);
 }
 
 Z_DEFINE_CLASS_CONSTRUCTOR(ZNProcessor, znprocessor,

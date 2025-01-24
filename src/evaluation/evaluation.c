@@ -9,7 +9,7 @@ const zclazz *ZNEvaluation;
 typedef struct ZNEvaluation_class znevaluation_class;
 typedef struct ZNEvaluation znevaluation;
 
-void znevaluation_compute_metric(znevaluation *evaluation, znsampler *data) {
+float znevaluation_compute_metric(void *evaluation, void *data) {
   znevaluation_class *class =
       (znevaluation_class *)zclassof((zobject *)evaluation);
   assert((*class).compute_metric);

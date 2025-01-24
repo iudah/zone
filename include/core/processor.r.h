@@ -11,7 +11,9 @@ extern "C" {
 #endif
 
 Z_DECLARE_CLASS(zncomponent, ZNProcessor, znprocessor, /*members*/,
-                /*methods*/ Z_DECLARE_CLASS_METHOD(void, znprocessor, process))
+                /*methods*/
+                Z_DECLARE_CLASS_METHOD(void *, znprocessor, process,
+                                       void *input))
 
 #ifdef __cplusplus
 }

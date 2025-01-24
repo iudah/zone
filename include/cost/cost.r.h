@@ -9,10 +9,11 @@
 extern "C" {
 #endif
 
-Z_DECLARE_CLASS(zncomponent, ZNCost, zncost, /*members*/,
+Z_DECLARE_CLASS(zncomponent, ZNCost, zncost, /*members*/ void *loss;
+                ,
                 /*methods*/
-                Z_DECLARE_CLASS_METHOD(void, zncost, compute, float *prediction,
-                                       float *targets))
+                Z_DECLARE_CLASS_METHOD(void *, zncost, compute_loss,
+                                       void *prediction, void *targets))
 
 #ifdef __cplusplus
 }

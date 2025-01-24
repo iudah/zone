@@ -9,6 +9,9 @@ extern "C" {
 
 Z_DECLARE_CLASS_TYPE(ZNCost, zncost)
 
+void *zncost_compute_loss(void *cost, void *prediction, void *target);
+void zncost_compute_gradients(void *cost);
+
 #ifdef __cplusplus
 }
 #endif

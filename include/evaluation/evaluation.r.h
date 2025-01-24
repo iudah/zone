@@ -12,7 +12,7 @@ extern "C" {
 
 Z_DECLARE_CLASS(zncomponent, ZNEvaluation, znevaluation, /*members*/,
                 /*methods*/
-                Z_DECLARE_CLASS_METHOD(void, znevaluation, compute_metric,
+                Z_DECLARE_CLASS_METHOD(float, znevaluation, compute_metric,
                                        znsampler *data))
 
 #ifdef __cplusplus

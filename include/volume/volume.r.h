@@ -9,12 +9,13 @@
 extern "C" {
 #endif
 
-Z_DECLARE_CLASS(zncomponent, ZNVolume, znvolume, /*member*/ float *data;
+Z_DECLARE_CLASS(zncomponent, ZNVolume, znvolume, /*member*/ void *tensor;
                 ,
                 /*methods*/ Z_DECLARE_CLASS_METHOD(float *, znvolume, at,
                                                    zsize *idx);
                 /*methods*/ Z_DECLARE_CLASS_METHOD(void, znvolume, reshape,
-                                                   zsize *idx))
+                                                   uint8_t rank,
+                                                   uint32_t *shape))
 
 #ifdef __cplusplus
 }

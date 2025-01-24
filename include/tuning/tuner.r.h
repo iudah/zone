@@ -12,7 +12,7 @@ extern "C" {
 Z_DECLARE_CLASS(zncomponent, ZNTuner, zntuner, /*members*/,
                 /*methods*/
                 Z_DECLARE_CLASS_METHOD(void, zntuner, update_weights,
-                                       float *weights, float *gradients))
+                                       void *weights))
 
 #ifdef __cplusplus
 }
