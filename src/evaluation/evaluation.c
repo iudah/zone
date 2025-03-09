@@ -1,8 +1,8 @@
-#include "../../include/evaluation/evaluation.r.h"
-
 #include <assert.h>
 #include <zobject.h>
 #include <zobject.r.h>
+
+#include "evaluation.r.h"
 
 const zclazz *ZNEvaluation;
 

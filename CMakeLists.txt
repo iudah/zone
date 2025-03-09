@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.15)
 
-project(Zone VERSION 1.0 DESCRIPTION "Zone NN API")
+project(Zone VERSION 2.1 DESCRIPTION "Zone NN API")
 
 set(TARGET zone)
 
@@ -33,21 +33,21 @@ include(ExternalProject)
 ExternalProject_Add(
   ZObject 
   SOURCE_DIR /sdcard/Jay/Projects/xab_laud_ubject/zobject/
-  CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${CMAKE_BINARY_DIR}/
+  CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${CMAKE_BINARY_DIR}/ -DBUILD_TESTS=OFF
   BUILD_ALWAYS TRUE
 )
 
 ExternalProject_Add(
   Zot 
   SOURCE_DIR /sdcard/Jay/Projects/xab_laud_ubject/zot/
-  CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${CMAKE_BINARY_DIR}/
+  CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${CMAKE_BINARY_DIR}/ -DBUILD_TESTS=OFF
   BUILD_ALWAYS TRUE
 )
 
 ExternalProject_Add(
   Zode 
   SOURCE_DIR /sdcard/Jay/Projects/xab_laud_ubject/zode/
-  CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${CMAKE_BINARY_DIR}/
+  CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${CMAKE_BINARY_DIR}/ -DBUILD_TESTS=OFF
   BUILD_ALWAYS TRUE
 )
 

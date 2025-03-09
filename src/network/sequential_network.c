@@ -1,28 +1,30 @@
-#include "../../include/network/sequential_network.h"
-#include "../../include/network/sequential_network.r.h"
+#include "sequential_network.h"
 
 #include <assert.h>
 #include <inttypes.h>
 #include <zobject.h>
 #include <zobject.r.h>
 
+#include "sequential_network.r.h"
+
 static void add_unit(znsequentialnetwork *sequentialnetwork, znunit *layer) {
   Z_SUPER_CALL(sequentialnetwork, znnetwork_add_unit, layer);
   printf("Layer added to SequentialNetwork.\n");
 }
 
-static void process(znsequentialnetwork *sequentialnetwork) {
+static void *process(znsequentialnetwork *sequentialnetwork, void *input) {
   for (zsize i = 0; i < sequentialnetwork->_.idx; i++) {
-    znunit_compute(sequentialnetwork->_.units[i]);
+    input = znunit_compute(sequentialnetwork->_.units[i], input);
   }
+  return input;
 }
 
 static void train(znsequentialnetwork *sequentialnetwork) {
   printf("Training SequentialNetwork...\n");
 }
 
-static void evaluate(znsequentialnetwork *sequentialnetwork) {
-  printf("Evaluating SequentialNetwork...\n");
+static void *evaluate(znsequentialnetwork *sequentialnetwork, void *input) {
+  return process(sequentialnetwork, input);
 }
 
 static void initialize(znsequentialnetwork *sequentialnetwork) {

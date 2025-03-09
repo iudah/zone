@@ -1,11 +1,11 @@
-#include "../../include/triggers/trigger.r.h"
-
 #include <assert.h>
 #include <zobject.h>
 #include <zobject.r.h>
 #include <zobjectdef.r.h>
 
-void zntrigger_trigger(zntrigger *trigger, float input) {
+#include "trigger.r.h"
+
+void *zntrigger_trigger(zntrigger *trigger, void *input) {
   zntrigger_class *class = (zntrigger_class *)zclassof((zobject *)trigger);
   assert((*class).trigger);
   return (*class).trigger(trigger, input);

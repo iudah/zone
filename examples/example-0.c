@@ -1,20 +1,23 @@
-#include "../include/cost/mse_cost.h"
-#include "../include/data/batch_sampler.h"
-#include "../include/evaluation/accuracy_evaluation.h"
-#include "../include/evaluation/evaluation.h"
-#include "../include/network/network.h"
-#include "../include/network/sequential_network.h"
-#include "../include/training/learning.h"
-#include "../include/training/supervised_learning.h"
-#include "../include/triggers/relutrigger.h"
-#include "../include/tuning/sgd_tuner.h"
-#include "../include/units/denseunit.h"
+#include "../src/cost/mse_cost.h"
+#include "../src/data/batch_sampler.h"
+#include "../src/evaluation/accuracy_evaluation.h"
+#include "../src/evaluation/evaluation.h"
+#include "../src/network/network.h"
+#include "../src/network/sequential_network.h"
+#include "../src/training/learning.h"
+#include "../src/training/supervised_learning.h"
+#include "../src/triggers/relutrigger.h"
+#include "../src/tuning/sgd_tuner.h"
+#include "../src/units/denseunit.h"
+#include <stdio.h>
 #include <string.h>
+#include <zode.h>
 
 int main() {
+
   // Create components
   auto relu = znew(ZNReluTrigger, NULL);
-  auto dense_layer = znew(ZNDenseUnit, 128, relu, NULL);
+  auto dense_layer = znew(ZNDenseUnit, 2, 2, relu, NULL);
   auto network = znew(ZNSequentialNetwork, NULL);
   znnetwork_add_unit((void *)network, (void *)dense_layer);
   auto cost = znew(ZNMSECost, NULL);
@@ -24,28 +27,24 @@ int main() {
   auto learning = znew(ZNSupervisedLearning, network, cost, tuner, NULL);
 
   // Train and evaluate
-  auto *data_sampler = znew(ZNBatchSampler, NULL);
+  auto *data_sampler = znew(
+      ZNBatchSampler,
+      /*x    */ zode_from_array(2, (uint32_t[]){1, 2}, (float[]){0.1f, 0.9f}),
+      /*y_hat*/ zode_from_array(2, (uint32_t[]){1, 2}, (float[]){0.01f, 0.99f}),
+      NULL);
   znlearning_train((void *)learning, (void *)data_sampler);
 
-  auto *evaluation = znew(ZNAccuracyEvaluation, NULL);
-  float accuracy =
-      znevaluation_compute_metric((void *)evaluation, (void *)data_sampler);
+  void *prediction = znnetwork_evaluate(
+      network, zode_from_array(2, (uint32_t[]){1, 2}, (float[]){0.1f, 0.9f}));
 
-  printf("Accuracy: %g\n", accuracy);
+  zode_puts(prediction, stdout);
 
-#if 0
+  // auto *evaluation = znew(ZNAccuracyEvaluation, NULL);
+  // float accuracy =
+  //     znevaluation_compute_metric((void *)evaluation, (void
+  //     *)data_sampler);
 
-  Evaluation *evaluation = new AccuracyEvaluation();
-  float accuracy = evaluation->computeMetric(dataSampler);
-
-  std::cout << "Accuracy: " << accuracy << "%" << std::endl;
-
-  // Clean up
-  delete learning;
-  delete evaluation;
-  delete network;
-  delete dataSampler;
-#endif
+  // printf("Accuracy: %g\n", accuracy);
 
   zdelete(tuner);
   zdelete(cost);

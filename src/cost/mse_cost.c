@@ -1,9 +1,9 @@
-#include "../../include/cost/mse_cost.r.h"
-
 #include <assert.h>
 #include <zobject.h>
 #include <zobject.r.h>
 #include <zode.h>
+
+#include "mse_cost.r.h"
 
 static zode *compute_loss(znmsecost *cost, void *predictions, void *targets) {
   return zode_mse(predictions, targets);

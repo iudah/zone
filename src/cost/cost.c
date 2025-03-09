@@ -1,9 +1,9 @@
-#include "../../include/cost/cost.r.h"
-
 #include <assert.h>
 #include <zobject.h>
 #include <zobject.r.h>
 #include <zode.h>
+
+#include "cost.r.h"
 
 void zncost_compute_gradients(void *self) {
   zncost *cost = self;
@@ -14,8 +14,7 @@ void *zncost_compute_loss(void *cost, void *prediction, void *target) {
   zncost_class *class = (zncost_class *)zclassof((zobject *)cost);
   assert((*class).compute_loss);
   zncost *self = cost;
-  if (self->loss)
-    zode_destroy(self->loss);
+  if (self->loss) zode_destroy(self->loss);
   return self->loss = (*class).compute_loss(cost, prediction, target);
 }
 

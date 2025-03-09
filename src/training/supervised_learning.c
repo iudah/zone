@@ -1,8 +1,8 @@
-#include "../../include/training/supervised_learning.r.h"
-
 #include <assert.h>
 #include <zobject.h>
 #include <zobject.r.h>
+
+#include "supervised_learning.r.h"
 
 const zclazz *ZNSupervisedLearning;
 
@@ -12,7 +12,6 @@ typedef struct ZNSupervisedLearning znsupervisedLearning;
 static void train(znsupervisedlearning *learning, znsampler *data) {
   printf("Supervised learning training started.\n");
   Z_SUPER_CALL(learning, znlearning_train, data);
-  // znnetwork_train(learning->_.network);
   printf("Training complete.\n");
 }
 

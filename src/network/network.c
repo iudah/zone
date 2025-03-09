@@ -1,9 +1,9 @@
-#include "../../include/network/network.r.h"
-
 #include <assert.h>
 #include <zobject.h>
 #include <zobject.r.h>
 #include <zot.h>
+
+#include "network.r.h"
 
 static void add_unit(znnetwork *network, znunit *unit) {
   if (network->idx == network->length) {
@@ -14,7 +14,7 @@ static void add_unit(znnetwork *network, znunit *unit) {
 
     network->length += 20;
     network->units =
-        realloc(network->units, network->length * sizeof(*network->units));
+        zrealloc(network->units, network->length * sizeof(*network->units));
   }
 
   network->units[network->idx++] = unit;
@@ -33,10 +33,10 @@ void znnetwork_train(znnetwork *network) {
   return (*class).train(network);
 }
 
-void znnetwork_evaluate(znnetwork *network) {
+void *znnetwork_evaluate(znnetwork *network, void *input) {
   znnetwork_class *class = (znnetwork_class *)zclassof((zobject *)network);
   assert((*class).evaluate);
-  return (*class).evaluate(network);
+  return (*class).evaluate(network, input);
 }
 
 Z_DEFINE_CLASS_CONSTRUCTOR(ZNNetwork, znnetwork,

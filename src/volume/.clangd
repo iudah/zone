@@ -1,2 +1,9 @@
 CompileFlags:
-	Add: [ -I../../../zobject/include/ ]
+  Add:
+    [
+      -xc,
+      -std=c23,
+      -I../../../zobject/include/,
+      -I../../../zot/include,
+      -I../../../zode/include,
+    ]

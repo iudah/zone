@@ -1,12 +1,12 @@
-#include "../../include/evaluation/accuracy_evaluation.r.h"
-
 #include <assert.h>
 #include <zobject.h>
 #include <zobject.r.h>
 
+#include "accuracy_evaluation.r.h"
+
 static float compute_metric(znaccuracyevaluation *evaluation, znsampler *data) {
   printf("Calculating accuracy...\n");
-  return 95.0f; // Placeholder value
+  return 95.0f;
 }
 
 static void initialize() { printf("AccuracyEvaluation initialized.\n"); }

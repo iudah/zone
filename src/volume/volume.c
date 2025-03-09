@@ -1,12 +1,12 @@
-#include "../../include/volume/volume.r.h"
 #include <assert.h>
 #include <stdint.h>
 #include <zobject.h>
 #include <zobject.r.h>
 #include <zode.h>
 
-static znvolume *znvolume_constructor(znvolume *volume, va_list *argp) {
+#include "volume.r.h"
 
+static znvolume *znvolume_constructor(znvolume *volume, va_list *argp) {
   auto rank = va_arg(*argp, int);
   auto shape = va_arg(*argp, uint32_t *);
 
@@ -15,7 +15,6 @@ static znvolume *znvolume_constructor(znvolume *volume, va_list *argp) {
   return volume;
 }
 static znvolume *znvolume_destructor(znvolume *volume) {
-
   zode_destroy(volume->tensor);
 
   return volume;

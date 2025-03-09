@@ -1,20 +1,19 @@
-#include "../../include/tuning/sgd_tuner.r.h"
-
 #include <assert.h>
 #include <zobject.h>
 #include <zobject.r.h>
 #include <zode.h>
 
-znsgdtuner *znsgdtuner_constructor(znsgdtuner *tuner, va_list *argp) {
+#include "sgd_tuner.r.h"
 
+znsgdtuner *znsgdtuner_constructor(znsgdtuner *tuner, va_list *argp) {
   tuner->learning_rate =
       zode_full_tensor(1, (uint32_t[]){1}, (float)va_arg(*argp, double));
 
   return tuner;
 }
 
-static void update_weights(znsgdtuner *tuner, void *weights) {
-  zode_sgd(weights, tuner->learning_rate);
+static void update_network_weights(znsgdtuner *tuner, void *prediction) {
+  zode_sgd(prediction, tuner->learning_rate);
 }
 
 static void initialize(znsgdtuner *tuner) {
@@ -37,6 +36,7 @@ static char *describe(znsgdtuner *sgdtuner) {
 Z_DEFINE_CLASS_CONSTRUCTOR(ZNSGDTuner, znsgdtuner, )
 
 Z_INIT_CLASS_WITH_PRIORITIES(134, ZNSGDTuner, ZNTuner, NULL, zctor,
-                             znsgdtuner_constructor, zntuner_update_weights,
-                             update_weights, zncomponent_initialize, initialize,
-                             zncomponent_describe, describe, NULL)
+                             znsgdtuner_constructor,
+                             zntuner_update_network_weights,
+                             update_network_weights, zncomponent_initialize,
+                             initialize, zncomponent_describe, describe, NULL)

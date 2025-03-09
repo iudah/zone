@@ -1,8 +1,8 @@
-#include "../../include/data/sampler.r.h"
-
 #include <assert.h>
 #include <zobject.h>
 #include <zobject.r.h>
+
+#include "sampler.r.h"
 
 void **znsampler_sample_batch(void *sampler, zsize batch_size, zsize *n_batch) {
   znsampler_class *class = (znsampler_class *)zclassof((zobject *)sampler);

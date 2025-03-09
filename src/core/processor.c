@@ -1,9 +1,11 @@
-#include "../../include/core/processor.h"
-#include "../../include/core/processor.r.h"
+#include "processor.h"
+
 #include <assert.h>
 #include <zobject.h>
 #include <zobject.r.h>
 #include <zobjectdef.r.h>
+
+#include "processor.r.h"
 
 void *znprocessor_process(void *processor, void *input) {
   znprocessor_class *class =

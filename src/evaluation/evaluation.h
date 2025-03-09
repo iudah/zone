@@ -1,0 +1,19 @@
+#ifndef EVALUATION_H
+#define EVALUATION_H
+
+#include <zobject.h>
+
+#include "../data/sampler.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+Z_DECLARE_CLASS_TYPE(ZNEvaluation, znevaluation);
+
+float znevaluation_compute_metric(void *evaluation, void *data);
+
+#ifdef __cplusplus
+}
+#endif
+#endif

@@ -1,6 +1,3 @@
-#include "../../include/units/denseunit.r.h"
-#include "../../include/units/unit.h"
-
 #include <assert.h>
 #include <inttypes.h>
 #include <stdarg.h>
@@ -14,21 +11,30 @@
 #include <zode.h>
 #include <zot.h>
 
-zndenseunit *zndenseunit_constructor(zndenseunit *denseunit, va_list *argp) {
+#include "denseunit.r.h"
+#include "unit.h"
 
+zndenseunit *zndenseunit_constructor(zndenseunit *denseunit, va_list *argp) {
   denseunit->num_units = va_arg(*argp, int);
+  int num_in = va_arg(*argp, int);
   denseunit->activation = va_arg(*argp, zntrigger *);
 
-  denseunit->weights = NULL;
+  denseunit->weights =
+      zode_random(2, (uint32_t[]){num_in, denseunit->num_units});
   denseunit->biases = zode_random(2, (uint32_t[]){1, denseunit->num_units});
 
   return denseunit;
 }
 
-static void compute(zndenseunit *denseunit) {
-  // Simple computation (placeholder)
+static void *compute(zndenseunit *denseunit, void *input) {
   printf("DenseUnit: Computing with %" PRIu32 " units.\n",
          denseunit->num_units);
+
+  zode_puts(denseunit->weights, stdout);
+
+  return zntrigger_trigger(
+      denseunit->activation,
+      zode_add(zode_matmul(input, denseunit->weights), denseunit->biases));
 }
 
 void initialize(zndenseunit *denseunit) {

@@ -1,7 +1,7 @@
 ZONE{
     global:
     ZNDenseUnit;ZNReluTrigger;ZNSequentialNetwork;ZNMSECost;ZNSGDTuner;ZNSupervisedLearning;ZNBatchSampler;ZNAccuracyEvaluation;
-    znnetwork_add_unit;znlearning_train;znevaluation_compute_metric;
+    znnetwork_add_unit;znlearning_train;znevaluation_compute_metric;znnetwork_evaluate;
     local:
     *;
 };

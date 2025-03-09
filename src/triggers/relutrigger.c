@@ -1,14 +1,17 @@
-#include "../../include/triggers/relutrigger.r.h"
-
 #include <assert.h>
 #include <math.h>
 #include <string.h>
 #include <zobject.h>
 #include <zobject.r.h>
 #include <zobjectdef.r.h>
+#include <zode.h>
 #include <zot.h>
 
-static float trigger(float input) { return 0; /*fmax(0.0f, input); */ }
+#include "relutrigger.r.h"
+
+static void *trigger(znrelutrigger *trigger, void *input) {
+  return zode_relu(input);
+}
 
 static void initialize() { printf("ReLU activation initialized.\n"); }
 
