@@ -9,9 +9,14 @@ const zclazz *ZNSupervisedLearning;
 typedef struct ZNSupervisedLearning_class znsupervisedlearning_class;
 typedef struct ZNSupervisedLearning znsupervisedLearning;
 
-static void train(znsupervisedlearning *learning, znsampler *data) {
+void *zn_supervised_learning(void *network, void *cost, void *tuner) {
+  return znew(ZNSupervisedLearning, network, cost, tuner, NULL);
+}
+
+static void train(znsupervisedlearning *learning, znsampler *data,
+                  uint64_t n_iterations) {
   printf("Supervised learning training started.\n");
-  Z_SUPER_CALL(learning, znlearning_train, data);
+  Z_SUPER_CALL(learning, znlearning_train, data, n_iterations);
   printf("Training complete.\n");
 }
 

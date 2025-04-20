@@ -17,8 +17,8 @@ Z_DECLARE_CLASS(zncomponent, ZNLearning, znlearning, /*members*/
                 zncost * cost_function; zntuner * tuner;
                 ,
                 /*methods*/
-                Z_DECLARE_CLASS_METHOD(void, znlearning, train,
-                                       znsampler *data))
+                Z_DECLARE_CLASS_METHOD(void, znlearning, train, znsampler *data,
+                                       uint64_t n_iterations))
 
 #ifdef __cplusplus
 }

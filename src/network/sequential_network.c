@@ -7,9 +7,11 @@
 
 #include "sequential_network.r.h"
 
+void *zn_sequential() { return znew(ZNSequentialNetwork, NULL); }
+
 static void add_unit(znsequentialnetwork *sequentialnetwork, znunit *layer) {
   Z_SUPER_CALL(sequentialnetwork, znnetwork_add_unit, layer);
-  printf("Layer added to SequentialNetwork.\n");
+  // printf("Layer added to SequentialNetwork.\n");
 }
 
 static void *process(znsequentialnetwork *sequentialnetwork, void *input) {

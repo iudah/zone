@@ -9,6 +9,8 @@ extern "C" {
 
 Z_DECLARE_CLASS_TYPE(ZNSequentialNetwork, znsequentialnetwork)
 
+void *zn_sequential();
+
 #ifdef __cplusplus
 }
 #endif

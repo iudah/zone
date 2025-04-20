@@ -14,8 +14,10 @@ void *zncost_compute_loss(void *cost, void *prediction, void *target) {
   zncost_class *class = (zncost_class *)zclassof((zobject *)cost);
   assert((*class).compute_loss);
   zncost *self = cost;
-  if (self->loss) zode_destroy(self->loss);
-  return self->loss = (*class).compute_loss(cost, prediction, target);
+  self->loss = (*class).compute_loss(cost, prediction, target);
+  printf("Loss: ");
+  zode_puts(self->loss, stdout);
+  return self->loss;
 }
 
 Z_DEFINE_CLASS_CONSTRUCTOR(ZNCost, zncost,

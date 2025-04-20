@@ -1,7 +1,35 @@
-ZONE{
-    global:
-    ZNDenseUnit;ZNReluTrigger;ZNSequentialNetwork;ZNMSECost;ZNSGDTuner;ZNSupervisedLearning;ZNBatchSampler;ZNAccuracyEvaluation;
-    znnetwork_add_unit;znlearning_train;znevaluation_compute_metric;znnetwork_evaluate;
-    local:
-    *;
+ZONE {
+global:
+  ZNDenseUnit;
+  ZNReluTrigger;
+  ZNSequentialNetwork;
+  ZNMSECost;
+  ZNSGDTuner;
+  ZNSupervisedLearning;
+  ZNBatchSampler;
+  ZNAccuracyEvaluation;
+  znnetwork_add_unit;
+  znlearning_train;
+  znevaluation_compute_metric;
+  znnetwork_evaluate;
+  zn_relu;
+  zn_dense;
+  zn_sequential;
+  zn_mse;
+  zn_sgd;
+  zn_supervised_learning;
+  zn_batch_sampler;
+  zn_sigmoid;
+  zn_dense_train_weight;
+  zn_dense_train_bias;
+  zn_lm_token_sampler;
+  zn_embed;
+  ZNUnit_class;
+  ZNUnit;
+  zncomponent_describe;
+  zncomponent_initialize;
+  znunit_compute;
+  zn_cross_entropy;
+local:
+  *;
 };

@@ -14,35 +14,63 @@
 #include "denseunit.r.h"
 #include "unit.h"
 
+void *zn_dense(uint64_t out_dim, uint64_t in_dim, void *activator, void *weight,
+               void *bias) {
+  return znew(ZNDenseUnit, out_dim, in_dim, activator, weight, bias, nullptr);
+}
+
+static void zn_dense_train(void *var_node, bool whether_to_train) {
+  if (!whether_to_train) {
+    zode_stop_gradient(var_node);
+  } else {
+    zode_continue_gradient(var_node);
+  }
+}
+
+void zn_dense_train_weight(void *dense, bool whether_to_train_weight) {
+  return zn_dense_train(((zndenseunit *)dense)->weights,
+                        whether_to_train_weight);
+}
+void zn_dense_train_bias(void *dense, bool whether_to_train_bias) {
+  return zn_dense_train(((zndenseunit *)dense)->biases, whether_to_train_bias);
+}
+
 zndenseunit *zndenseunit_constructor(zndenseunit *denseunit, va_list *argp) {
-  denseunit->num_units = va_arg(*argp, int);
-  int num_in = va_arg(*argp, int);
+  denseunit->num_units = va_arg(*argp, uint64_t);
+  int num_in = va_arg(*argp, uint64_t);
   denseunit->activation = va_arg(*argp, zntrigger *);
 
-  denseunit->weights =
-      zode_random(2, (uint32_t[]){num_in, denseunit->num_units});
-  denseunit->biases = zode_random(2, (uint32_t[]){1, denseunit->num_units});
+  denseunit->weights = va_arg(*argp, void *);
+  if (!denseunit->weights) {
+    denseunit->weights =
+        zode_random(2, (uint32_t[]){num_in, denseunit->num_units});
+  }
+
+  denseunit->biases = va_arg(*argp, void *);
+  if (!denseunit->biases) {
+    denseunit->biases = zode_random(2, (uint32_t[]){1, denseunit->num_units});
+  }
 
   return denseunit;
 }
 
 static void *compute(zndenseunit *denseunit, void *input) {
-  printf("DenseUnit: Computing with %" PRIu32 " units.\n",
-         denseunit->num_units);
+  // printf("DenseUnit: Computing with %" PRIu32 " units.\n",
+        // denseunit->num_units);
 
-  zode_puts(denseunit->weights, stdout);
+  // zode_puts(denseunit->weights, stdout);
 
   return zntrigger_trigger(
       denseunit->activation,
       zode_add(zode_matmul(input, denseunit->weights), denseunit->biases));
 }
 
-void initialize(zndenseunit *denseunit) {
+static void initialize(zndenseunit *denseunit) {
   printf("DenseUnit initialized with %" PRIu32 " units.\n",
          denseunit->num_units);
 }
 
-char *describe(zndenseunit *denseunit) {
+static char *describe(zndenseunit *denseunit) {
   ZN_QUICK_DESCRIBE(buffer, "DenseUnit with %" PRIu32 " units.",
                     denseunit->num_units);
   return buffer;

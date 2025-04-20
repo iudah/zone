@@ -9,6 +9,8 @@ extern "C" {
 
 Z_DECLARE_CLASS_TYPE(ZNReluTrigger, znrelutrigger)
 
+void *zn_relu();
+
 #ifdef __cplusplus
 }
 #endif

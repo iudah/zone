@@ -11,7 +11,8 @@ extern "C" {
 
 Z_DECLARE_CLASS_TYPE(ZNLearning, znlearning)
 
-void znlearning_train(znlearning *learning, znsampler *data);
+void znlearning_train(znlearning *learning, znsampler *data,
+                      uint64_t n_iterations);
 
 #ifdef __cplusplus
 }

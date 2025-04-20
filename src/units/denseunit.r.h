@@ -12,8 +12,9 @@ extern "C" {
 #endif
 
 Z_DECLARE_CLASS(znunit, ZNDenseUnit, zndenseunit,
-                /*members*/ uint32_t num_units;
-                zntrigger * activation; void *weights; void *biases;,
+                /*members*/
+                zntrigger *activation;
+                void *weights; void *biases; uint32_t num_units;,
                 /*methods*/)
 
 #ifdef __cplusplus

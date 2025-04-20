@@ -1,5 +1,4 @@
 #include <assert.h>
-#include <math.h>
 #include <string.h>
 #include <zobject.h>
 #include <zobject.r.h>
@@ -8,6 +7,8 @@
 #include <zot.h>
 
 #include "relutrigger.r.h"
+
+void *zn_relu() { return znew(ZNReluTrigger, NULL); }
 
 static void *trigger(znrelutrigger *trigger, void *input) {
   return zode_relu(input);
@@ -18,7 +19,7 @@ static void initialize() { printf("ReLU activation initialized.\n"); }
 static char *description = "ReLU Activation Function";
 static char *describe() {
   char *buffer = zcalloc(26, 1);
-  memcpy(buffer, description, 26);
+  memcpy(buffer, description, 25);
   return buffer;
 }
 

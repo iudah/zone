@@ -5,6 +5,10 @@
 
 #include "sgd_tuner.r.h"
 
+void *zn_sgd(float learning_rate) {
+  return znew(ZNSGDTuner, (double)learning_rate, NULL);
+}
+
 znsgdtuner *znsgdtuner_constructor(znsgdtuner *tuner, va_list *argp) {
   tuner->learning_rate =
       zode_full_tensor(1, (uint32_t[]){1}, (float)va_arg(*argp, double));

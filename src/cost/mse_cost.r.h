@@ -10,7 +10,7 @@
 extern "C" {
 #endif
 
-Z_DECLARE_CLASS(zncost, ZNMSECost, znmsecost, /*members*/,
+Z_DECLARE_CLASS(zncost, ZNMSECost, znmsecost, /*members*/ int axis;,
                 /*methods*/
 )
 

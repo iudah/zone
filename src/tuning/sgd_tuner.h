@@ -9,6 +9,8 @@ extern "C" {
 
 Z_DECLARE_CLASS_TYPE(ZNSGDTuner, znsgdtuner)
 
+void *zn_sgd(float learning_rate);
+
 #ifdef __cplusplus
 }
 #endif

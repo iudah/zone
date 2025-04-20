@@ -9,6 +9,8 @@ extern "C" {
 
 Z_DECLARE_CLASS_TYPE(ZNSupervisedLearning, znsupervisedlearning)
 
+void *zn_supervised_learning(void *network, void *cost, void *tuner);
+
 #ifdef __cplusplus
 }
 #endif

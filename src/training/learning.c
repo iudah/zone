@@ -20,37 +20,42 @@ znlearning *znlearning_constructor(znlearning *learning, va_list *argp) {
   return learning;
 }
 
-void train(znlearning *learning, znsampler *data) {
-  zsize num_batch = 0;
-  void **batch = znsampler_sample_batch(data, 32, &num_batch); // Sample batches
-  for (zsize i = 0; i < num_batch; i++) {
-    void *input = batch[i * 2];
-    void *output = batch[i * 2 + 1];
+void train(znlearning *learning, znsampler *data, uint64_t n_iterations) {
+  for (uint64_t j = 0; j < n_iterations; j++) {
+    zsize num_batch = 0;
+    void **batch =
+        znsampler_sample_batch(data, 32, &num_batch); // Sample batches
+    for (zsize i = 0; i < 1/*num_batch*/; i++) {
+      void *input = batch[i * 2];
+      void *output = batch[i * 2 + 1];
 
-    // Forward pass
-    void *prediction = znprocessor_process(learning->network, input);
+      zode_stop_gradient(input);
+      zode_stop_gradient(output);
 
-    // Objective loss
-    zncost_compute_loss(learning->cost_function, prediction, output);
+      // Forward pass
+      void *prediction = znprocessor_process(learning->network, input);
 
-    // Loss gradients
-    zncost_compute_gradients(learning->cost_function);
+      // Objective loss
+      zncost_compute_loss(learning->cost_function, prediction, output);
 
-    // Update weights
-    zntuner_update_network_weights(learning->tuner, prediction);
+      // Loss gradients
+      zncost_compute_gradients(learning->cost_function);
 
-    // Clean up tensors
-    prediction = NULL;
-    // zode_destroy(prediction);
-    // zode_destroy_tensor(input);
-    // todo: manage destroys of objects
+      // Update weights
+      zntuner_update_network_weights(learning->tuner, prediction);
+
+      // Clean up tensors
+      prediction = NULL;
+      // leave clean up to memalloc gc
+    }
   }
 }
 
-void znlearning_train(znlearning *learning, znsampler *data) {
+void znlearning_train(znlearning *learning, znsampler *data,
+                      uint64_t n_iterations) {
   znlearning_class *class = (znlearning_class *)zclassof((zobject *)learning);
   assert((*class).train);
-  return (*class).train(learning, data);
+  return (*class).train(learning, data, n_iterations);
 }
 
 Z_DEFINE_CLASS_CONSTRUCTOR(ZNLearning, znlearning,

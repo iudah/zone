@@ -5,8 +5,15 @@
 #include <zobject.r.h>
 #include <zode.h>
 #include <zot.h>
+#include <pcg_variants.h>
 
 #include "batch_sampler.r.h"
+
+void *zn_batch_sampler(void *input, void *label) {
+  return znew(ZNBatchSampler,
+              /*x    */ input,
+              /*y_hat*/ label, NULL);
+}
 
 static znbatchsampler *batchsampler_constructor(znbatchsampler *batch_sampler,
                                                 va_list *argp) {
@@ -23,31 +30,39 @@ static znbatchsampler *batchsampler_constructor(znbatchsampler *batch_sampler,
 
 static void **sample_batch(znbatchsampler *sampler, zsize batch_size,
                            zsize *n_batch) {
-  printf("Sampling a batch of size: %" PRIu64 "\n", batch_size);
   auto sample_length = zode_shape(sampler->inputs, (uint32_t[256]){1})[0];
-  *n_batch = (sample_length + batch_size - 1) / batch_size;
+  if (batch_size > sample_length)
+    batch_size = sample_length;
+  auto limit = sample_length - batch_size;
+  *n_batch = limit + 1;
 
   void **batches = zcalloc(*n_batch * 2, sizeof(void *));
   for (int i = 0; i < *n_batch; i++) {
-    batches[i * 2] = zode_slice(
-        sampler->inputs, 2,
-        (int32_t *[]){(int32_t[]){i * batch_size,
-                                  *n_batch == (i + 1) ? sample_length
-                                                      : ((i + 1) * batch_size),
-                                  1},
-                      ELLIPSIS});
+    uint32_t idx = limit * pcg32_random() / UINT32_MAX;
+
+    batches[i * 2] =
+        zode_slice(sampler->inputs, 2,
+                   (int32_t *[]){(int32_t[]){idx * batch_size,
+                                             *n_batch == (idx + 1)
+                                                 ? sample_length
+                                                 : ((idx + 1) * batch_size),
+                                             1},
+                                 ELLIPSIS});
 
     batches[i * 2 + 1] =
         sampler->labels != NULL
-            ? zode_slice(sampler->labels, 2,
-                         (int32_t *[]){(int32_t[]){i * batch_size,
-                                                   *n_batch == (i + 1)
-                                                       ? sample_length
-                                                       : ((i + 1) * batch_size),
-                                                   1},
-                                       ELLIPSIS})
+            ? zode_slice(
+                  sampler->labels, 2,
+                  (int32_t *[]){(int32_t[]){idx * batch_size,
+                                            *n_batch == (idx + 1)
+                                                ? sample_length
+                                                : ((idx + 1) * batch_size),
+                                            1},
+                                ELLIPSIS})
             : NULL;
   }
+
+  // printf("Sampling a batch of size: %" PRIu64 "\n", *n_batch);
 
   return batches;
 }
